@@ -1,0 +1,73 @@
+body {
+    background-color:lightcyan;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.schrift{
+ 
+    position:absolute;
+    top: 10px;
+       font-size: 40px;
+}
+.rechner{
+    width: 520px;
+    height: 480px;
+    border: solid rgb(0, 0, 0) 1px;
+    background-color:rgb(9, 253, 253);
+    margin-top: 130px;
+    border-radius: 10px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+.anzeige{
+    background-color: lightgray; 
+    height: 80px;
+    width:495px;
+    margin: 20px ;
+    border: solid black 1px;
+    border-radius: 5px;
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.tastenfeld{
+    background-color:lightgray;
+    width: 495px;
+    height: 330px;
+    border: solid black 1px;
+    border-radius: 5px; 
+     
+   
+}
+
+button{
+    width: 100px;
+    height: 30px;
+    margin: 10px;
+    background-color: white;
+    border: solid black 1px;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.reihe1 , .reihe2 , .reihe3 , .reihe4 , .reihe5{
+display: flex;
+
+ justify-content: center;
+ margin-top: 2px;
+
+}
+.tastenzahl{
+  
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+ 
+ 
+}

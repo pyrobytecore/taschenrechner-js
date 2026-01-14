@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taschenrechner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 class="schrift">Taschenrechner</h1>
+    <div class="rechner">
+        <div class="anzeige" id="anzeige"></div>
+        <div class="tastenfeld">
+            <div class="reihe1">
+            <div class="tastenzahl"><button id="remove-all" onclick="removeAllDruecken()">C</button></div>
+            <div class="tastenzahl" ><button id="klammer">( )</button></div>
+            <div class="tastenzahl" ><button id="prozent">%</button></div>
+            <div class="tastenzahl" ><button id="remove" onclick="remove()"><-</button></div>
+        </div>
+            <div class="reihe2">
+            <div class="tastenzahl" ><button id="zahl7" onclick="zahlDruecken(7)">7</button></div>
+            <div class="tastenzahl" ><button id="zahl8" onclick="zahlDruecken(8)">8</button></div>
+            <div class="tastenzahl" ><button id="zahl9" onclick="zahlDruecken(9)">9</button></div>
+            <div class="tastenzahl" ><button id="geteilt" onclick="operatorDruecken('/')">/</button></div>
+            </div>
+            <div class="reihe3">
+            <div class="tastenzahl" ><button id="zahl4" onclick="zahlDruecken(4)">4</button></div>
+            <div class="tastenzahl" ><button id="zahl5" onclick="zahlDruecken(5)">5</button></div>
+            <div class="tastenzahl" ><button id="zahl6" onclick="zahlDruecken(6)">6</button></div>
+            <div class="tastenzahl" ><button id="mal" onclick="operatorDruecken('*')">*</button></div>
+            </div>
+            <div class="reihe4">
+            <div class="tastenzahl" ><button id="zahl1" onclick="zahlDruecken(1)">1</button></div>
+            <div class="tastenzahl" ><button id="zahl2" onclick="zahlDruecken(2)">2</button></div>
+            <div class="tastenzahl" ><button id="zahl3" onclick="zahlDruecken(3)">3</button></div>
+            <div class="tastenzahl" ><button id="minus" onclick="operatorDruecken('-')">-</button></div>
+            </div>
+            <div class="reihe5">
+            <div class="tastenzahl" ><button id="zahl0" onclick="zahlDruecken(0)">0</button></div>
+            <div class="tastenzahl" ><button id="komma">.</button ></div>
+            <div class="tastenzahl" ><button id="gleich" onclick="gleich()">=</button></div>
+            <div class="tastenzahl" ><button id="plus" onclick="operatorDruecken('+')">+</button></div>
+            </div>
+        </div>
+        </div>
+    <script src="script.js"></script>
+</body>
+</html>
