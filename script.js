@@ -1,230 +1,170 @@
 // ================================
 // BUTTONS AUS DEM HTML HOLEN
 // ================================
-
-// Zahlen-Buttons
-const b1 = document.getElementById("zahl1");
-const b2 = document.getElementById("zahl2");
-const b3 = document.getElementById("zahl3");
-const b5 = document.getElementById("zahl5");
-const b6 = document.getElementById("zahl6");
-const b7 = document.getElementById("zahl7");
-const b8 = document.getElementById("zahl8");
-const b9 = document.getElementById("zahl9");
-const b0 = document.getElementById("zahl0");
-
-// Operator-Buttons
-const bK = document.getElementById("komma");
-const bMi = document.getElementById("minus");
-const bG = document.getElementById("geteilt");
-const bP = document.getElementById("prozent");
-const bKl = document.getElementById("klammer");
-const bM = document.getElementById("mal");
-const bPl = document.getElementById("plus");
-const bGl = document.getElementById("gleich");
-
-// Entfernen-Buttons
-const bR = document.getElementById("remove");
-const bRA = document.getElementById("remove-all");
-
-// Anzeigen
 const anzeige = document.getElementById("anzeige");
 const klammerAnzeige = document.getElementById("klammerAnzeige");
 const operatorAnzeige = document.getElementById("operatorAnzeige");
 
-
 // ================================
 // VARIABLEN FÜR DEN RECHENZUSTAND
 // ================================
-
-// Ergebnis der Rechnung
-let ergebnis;
-
-// Aktuelle Zahl, die der Benutzer eingibt (als String)
-let aktuelleEingabe = "";
-
-// Gespeicherte erste Zahl
-let gespeicherteZahl = null;
-
-// Zweite Zahl nach Operator
-let zweiteZahl = null;
-
-// Dritte Zahl (für Klammern)
-let dritteZahl = null;
-
-// Aktueller Operator (+, -, *, /)
-let operator = null;
-
-// Status, ob eine Klammer aktiv ist
-let klammer = null;
-
-// Zwischenspeicher für Klammerzustand
-let speicher = null;
-let zwischenSpeicher = null;
-
-// Operator innerhalb der Klammer
-let inKlammerOperator = null;
-
+let aktuelleEingabe = ""; // Was der Benutzer aktuell tippt
+let gespeicherteZahl = null; // Erste Zahl (außerhalb Klammer)
+let zweiteZahl = null; // Zweite Zahl (für normale Rechnung)
+let dritteZahl = null; // Zweite Zahl innerhalb Klammer
+let operator = null; // Operator außerhalb Klammer
+let klammer = false; // Ob Klammer aktiv ist
+let inKlammerOperator = null; // Operator innerhalb Klammer
+let klammerZahl = null; // Erste Zahl in der Klammer
+let ergebnis = null;
 
 // ================================
 // ZAHLEN EINGEBEN
 // ================================
-
-// Fügt die gedrückte Zahl zur aktuellen Eingabe hinzu
 function zahlDruecken(zahl) {
  aktuelleEingabe += zahl;
- anzeige.innerText = aktuelleEingabe;
+ aktualisiereAnzeige();
 }
-
-
-// ================================
-// OPERATOR DRÜCKEN (+ - * /)
-// ================================
-
-function operatorDruecken(op) {
-
- // Normaler Rechenfall ohne Klammern
- if (klammer === null && zwischenSpeicher === null) {
- gespeicherteZahl = Number(aktuelleEingabe);
- operator = op;
- aktuelleEingabe = "";
- anzeige.innerText = aktuelleEingabe;
-
- // Operator innerhalb einer Klammer
- } else if (klammer === '()') {
- aktuelleEingabe = "";
- zwischenSpeicher = klammer;
- klammer = null;
- inKlammerOperator = op;
- anzeige.innerText = aktuelleEingabe;
-
- // Operator nach abgeschlossener Klammer
- } else if (zwischenSpeicher === '()') {
- zweiteZahl = Number(aktuelleEingabe);
- aktuelleEingabe = "";
- operator = op;
- speicher = zwischenSpeicher;
- zwischenSpeicher = null;
- anzeige.innerText = aktuelleEingabe;
- }
-}
-
 
 // ================================
 // KOMMA (DEZIMALZAHL)
 // ================================
-
 function kommaDruecken() {
- // Verhindert mehrere Punkte
  if (!aktuelleEingabe.includes('.')) {
- if (aktuelleEingabe === '') {
- aktuelleEingabe = '0.';
- } else {
- aktuelleEingabe += '.';
- }
- anzeige.innerText = aktuelleEingabe;
+ aktuelleEingabe = aktuelleEingabe === '' ? '0.' : aktuelleEingabe + '.';
+ aktualisiereAnzeige();
  }
 }
 
+// ================================
+// OPERATOR DRÜCKEN (+ - * / %)
+// ================================
+function operatorDruecken(op) {
+ if (!klammer) {
+ // normale Rechnung
+ if (aktuelleEingabe !== "") {
+ gespeicherteZahl = Number(aktuelleEingabe);
+ aktuelleEingabe = "";
+ }
+ operator = op;
+ } else {
+ // innerhalb Klammer
+ if (aktuelleEingabe !== "") {
+ klammerZahl = Number(aktuelleEingabe);
+ aktuelleEingabe = "";
+ }
+ inKlammerOperator = op;
+ }
+ aktualisiereAnzeige();
+}
 
 // ================================
-// ALLES LÖSCHEN (RESET)
+// KLAMMER DRÜCKEN
 // ================================
+function klammerDruecken() {
+ klammer = true;
+ klammerZahl = Number(aktuelleEingabe) || 0;
+ aktuelleEingabe = "";
+ aktualisiereAnzeige();
+}
 
+// ================================
+// REMOVE (LETZTES ZEICHEN)
+// ================================
+function removeDruecken() {
+ if (aktuelleEingabe !== "") {
+ // Lösche das letzte Zeichen der Eingabe
+ aktuelleEingabe = aktuelleEingabe.slice(0, -1);
+ } else if (klammer && inKlammerOperator !== null) {
+ // Operator innerhalb Klammer zurücksetzen
+ inKlammerOperator = null;
+ } else if (!klammer && operator !== null) {
+ // Operator außerhalb Klammer zurücksetzen
+ operator = null;
+ } else if (klammer) {
+ // Klammer zurücksetzen
+ klammer = false;
+ klammerZahl = null;
+ }
+ aktualisiereAnzeige();
+}
+
+// ================================
+// REMOVE ALL (RESET)
+// ================================
 function removeAllDruecken() {
  aktuelleEingabe = "";
  gespeicherteZahl = null;
  zweiteZahl = null;
  dritteZahl = null;
  operator = null;
- klammer = null;
- speicher = null;
- zwischenSpeicher = null;
+ klammer = false;
+ klammerZahl = null;
  inKlammerOperator = null;
  ergebnis = null;
-
- anzeige.innerText = "0";
+ aktualisiereAnzeige();
 }
 
-
 // ================================
-// KLAMMER DRÜCKEN
+// GLEICH BERECHNUNG
 // ================================
-
-function klammerDruecken() {
- klammer = '()';
- gespeicherteZahl = Number(aktuelleEingabe);
- anzeige.innerText = aktuelleEingabe;
-}
-
-
-// ================================
-// REMOVE (EIN SCHRITT ZURÜCK)
-// ================================
-
-function removeDruecken() {
-
- // Entfernt das letzte Zeichen
- function loeschen() {
- aktuelleEingabe = aktuelleEingabe.slice(0, -1);
- }
-
- // Operator rückgängig machen
- if (aktuelleEingabe === "" && operator !== null && zweiteZahl === null) {
- operator = null;
- aktuelleEingabe = String(gespeicherteZahl);
-
- // Klammer rückgängig machen
- } else if (gespeicherteZahl !== null && klammer === '()') {
- klammer = null;
- aktuelleEingabe = String(gespeicherteZahl);
-
- // Zeichen löschen
- } else if (aktuelleEingabe !== "") {
- loeschen();
- }
-
- anzeige.innerText = aktuelleEingabe || "0";
-}
-
-
-// ================================
-// GLEICH (=) BERECHNUNG
-// ================================
-
 function gleich() {
-
- // Bestimmt zweite oder dritte Zahl
- if (speicher === null) {
- zweiteZahl = Number(aktuelleEingabe);
- } else {
+ if (klammer) {
+ // Klammerberechnung zuerst
+ if (aktuelleEingabe !== "") {
  dritteZahl = Number(aktuelleEingabe);
  }
-
- // Rechnung mit Klammern
- if (inKlammerOperator !== null) {
- if (inKlammerOperator === '+') {
- ergebnis = gespeicherteZahl + zweiteZahl;
- } else if (inKlammerOperator === '-') {
- ergebnis = gespeicherteZahl - zweiteZahl;
- } else if (inKlammerOperator === '*') {
- ergebnis = gespeicherteZahl * zweiteZahl;
- } else if (inKlammerOperator === '/') {
- ergebnis = gespeicherteZahl / zweiteZahl;
+ if (inKlammerOperator && klammerZahl !== null && dritteZahl !== null) {
+ switch (inKlammerOperator) {
+ case '+': klammerZahl = klammerZahl + dritteZahl; break;
+ case '-': klammerZahl = klammerZahl - dritteZahl; break;
+ case '*': klammerZahl = klammerZahl * dritteZahl; break;
+ case '/': klammerZahl = klammerZahl / dritteZahl; break;
  }
-
- // Normale Rechnung
+ }
+ // Äußere Rechnung
+ if (operator && gespeicherteZahl !== null) {
+ switch (operator) {
+ case '+': ergebnis = gespeicherteZahl + klammerZahl; break;
+ case '-': ergebnis = gespeicherteZahl - klammerZahl; break;
+ case '*': ergebnis = gespeicherteZahl * klammerZahl; break;
+ case '/': ergebnis = gespeicherteZahl / klammerZahl; break;
+ case '%': ergebnis = gespeicherteZahl / 100 * klammerZahl; break;
+ }
  } else {
- if (operator === '+') ergebnis = gespeicherteZahl + zweiteZahl;
- if (operator === '-') ergebnis = gespeicherteZahl - zweiteZahl;
- if (operator === '*') ergebnis = gespeicherteZahl * zweiteZahl;
- if (operator === '/') ergebnis = gespeicherteZahl / zweiteZahl;
- if (operator === '%') ergebnis = zweiteZahl / 100 * gespeicherteZahl;
+ ergebnis = klammerZahl;
+ }
+ } else {
+ // Normale Rechnung ohne Klammer
+ if (aktuelleEingabe !== "") zweiteZahl = Number(aktuelleEingabe);
+ if (operator && gespeicherteZahl !== null && zweiteZahl !== null) {
+ switch (operator) {
+ case '+': ergebnis = gespeicherteZahl + zweiteZahl; break;
+ case '-': ergebnis = gespeicherteZahl - zweiteZahl; break;
+ case '*': ergebnis = gespeicherteZahl * zweiteZahl; break;
+ case '/': ergebnis = gespeicherteZahl / zweiteZahl; break;
+ case '%': ergebnis = gespeicherteZahl / 100 * zweiteZahl; break;
+ }
+ } else {
+ ergebnis = zweiteZahl || gespeicherteZahl;
+ }
  }
 
- // Ergebnis anzeigen & Zustand zurücksetzen
- anzeige.innerText = String(ergebnis);
+ // Anzeige aktualisieren und Zustand zurücksetzen
+ anzeige.innerText = ergebnis;
  aktuelleEingabe = "";
  gespeicherteZahl = ergebnis;
  operator = null;
+ klammer = false;
+ klammerZahl = null;
+ inKlammerOperator = null;
+}
+
+// ================================
+// ANZEIGE AKTUALISIEREN
+// ================================
+function aktualisiereAnzeige() {
+ anzeige.innerText = aktuelleEingabe || "0";
+ klammerAnzeige.innerText = klammer ? "()" : "";
+ operatorAnzeige.innerText = operator || inKlammerOperator || "";
 }
