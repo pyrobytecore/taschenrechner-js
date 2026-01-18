@@ -1,73 +1,83 @@
+/* Grundlayout der Seite: Hintergrundfarbe und Zentrierung */
 body {
-    background-color:lightcyan;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.schrift{
- 
-    position:absolute;
-    top: 10px;
-       font-size: 40px;
-}
-.rechner{
-    width: 520px;
-    height: 480px;
-    border: solid rgb(0, 0, 0) 1px;
-    background-color:rgb(9, 253, 253);
-    margin-top: 130px;
-    border-radius: 10px;
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-}
-.anzeige{
-    background-color: lightgray; 
-    height: 80px;
-    width:495px;
-    margin: 20px ;
-    border: solid black 1px;
-    border-radius: 5px;
-   
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-}
-.tastenfeld{
-    background-color:lightgray;
-    width: 495px;
-    height: 330px;
-    border: solid black 1px;
-    border-radius: 5px; 
-     
-   
+ background-color: lightcyan;
+ display: flex;
+ justify-content: center;
+ align-items: center;
 }
 
-button{
-    width: 100px;
-    height: 30px;
-    margin: 10px;
-    background-color: white;
-    border: solid black 1px;
-    border-radius: 5px;
-    font-size: 20px;
+/* Überschrift oben auf der Seite */
+.schrift {
+ position: absolute;
+ top: 10px;
+ font-size: 40px;
 }
 
-.reihe1 , .reihe2 , .reihe3 , .reihe4 , .reihe5{
-display: flex;
+/* Hauptcontainer des Taschenrechners */
+.rechner {
+ width: 520px;
+ height: 480px;
+ border: 1px solid black;
+ background-color: rgb(9, 253, 253);
+ margin-top: 130px;
+ border-radius: 10px;
 
+ /* Vertikale Anordnung der Inhalte */
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+/* Anzeige für Eingaben und Ergebnisse */
+.anzeige {
+ background-color: lightgray;
+ height: 80px;
+ width: 495px;
+ margin: 20px;
+ border: 1px solid black;
+ border-radius: 5px;
+
+ /* Zentriert den Text innerhalb der Anzeige */
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
+/* Container für alle Taschenrechner-Tasten */
+.tastenfeld {
+ background-color: lightgray;
+ width: 495px;
+ height: 330px;
+ border: 1px solid black;
+ border-radius: 5px;
+}
+
+/* Allgemeines Styling für alle Buttons */
+button {
+ width: 100px;
+ height: 30px;
+ margin: 10px;
+ background-color: white;
+ border: 1px solid black;
+ border-radius: 5px;
+ font-size: 20px;
+}
+
+/* Layout für jede Tastenreihe */
+.reihe1, 
+.reihe2, 
+.reihe3, 
+.reihe4, 
+.reihe5 {
+ display: flex;
  justify-content: center;
  margin-top: 2px;
-
 }
-.tastenzahl{
-  
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
- 
- 
+/* Wrapper für einzelne Tasten */
+.tastenzahl {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin-top: 10px;
 }
